@@ -41,6 +41,7 @@ class Pizza(db.Model, SerializerMixin):
 
     # add relationship
     restaurant_pizzas = db.relationship("RestaurantPizza", back_populates="pizza", cascade= "all,delete, delete-orphan")
+    Restaurants = association_proxy("restaurant_pizzas", "restaurant")
 
     # add serialization rules
     serialize_rules = ("-restaurant_pizzas.restaurant", "-restaurant_pizzas.restaurant_pizzas")
