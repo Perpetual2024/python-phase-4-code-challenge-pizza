@@ -41,7 +41,7 @@ class RestaurantPizzaSchema(Schema):
 def index():
     return jsonify({"message": "Welcome to the Restaurant API!"})
 
-class RestaurantList(Resource):
+class RestaurantData(Resource):
     def get(self):
         restaurants = Restaurant.query.all()
         return [restaurant.to_dict(only=("id", "name", "address")) for restaurant in restaurants], 200
@@ -61,12 +61,12 @@ class RestaurantDetails(Resource):
             return {}, 204
         return {"error": "Restaurant not found"}, 404
 
-class PizzaList(Resource):
+class PizzaData(Resource):
     def get(self):
         pizzas = Pizza.query.all()
         return [pizza.to_dict(only=("id", "name", "ingredients")) for pizza in pizzas], 200
 
-class RestaurantPizzaList(Resource):
+class RestaurantPizzaData(Resource):
     def post(self):
         schema = RestaurantPizzaSchema()
         try:
@@ -94,10 +94,10 @@ class RestaurantPizzaList(Resource):
             app.logger.error(f"Unexpected error: {e}")
             return {"errors": "An unexpected error occurred"}, 500
 
-api.add_resource(RestaurantList, '/restaurants')
+api.add_resource(RestaurantData, '/restaurants')
 api.add_resource(RestaurantDetails, '/restaurants/<int:id>')
-api.add_resource(PizzaList, '/pizzas')
-api.add_resource(RestaurantPizzaList, '/restaurant_pizzas')
+api.add_resource(PizzaData, '/pizzas')
+api.add_resource(RestaurantPizzaData, '/restaurant_pizzas')
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
